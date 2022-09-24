@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Form, FormTitle, FormInput, SubmitButton } from './ContactForm.styled';
 
 export function ContactForm({ addContact }) {
-    return <div>
+    return <>
         <Form onSubmit={addContact}>
             <FormTitle> Name </FormTitle>
             <FormInput
@@ -24,7 +24,7 @@ export function ContactForm({ addContact }) {
             
             <SubmitButton type='submit' >Add Contact</SubmitButton>
         </Form>
-    </div>
+    </>
 }
 
 ContactForm.propTypes = {

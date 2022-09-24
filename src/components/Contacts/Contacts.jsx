@@ -10,30 +10,35 @@ import { ContactList } from './ContactList/ContactList';
 
 export class Contacts extends Component{
     state = {
-         contacts: [
-            {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
-            {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
-            {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
-            {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
-        ],
+        contacts: [],
         filter: '',
     }
 
     addContact = (e) => {
-        const { contacts } = this.state;
         e.preventDefault();
         const form = e.currentTarget;
         const newContactName = form.elements.name.value;
         const newContactNumber = form.elements.number.value;
+        const oldContacts = localStorage.getItem('contacts') ? JSON.parse(localStorage.getItem('contacts')) : [];
 
-        if (contacts.find(item => item.name.toLowerCase() === newContactName.toLowerCase()))
+        if (oldContacts.find(item => item.name.toLowerCase() === newContactName.toLowerCase()))
             {
                 return Notify.warning(`${newContactName} is alrady in contacts`,
                 { timeout: 4000, position: 'center-top', width: '400px', fontSize: '28px' })
             };
         const newContact = { id: nanoid(), name: newContactName, number: newContactNumber, };
-        this.setState(prew => ({ contacts: [...prew.contacts, newContact], }));
+        this.setState({ contacts: [...oldContacts, newContact], });
         form.reset();
+    }
+
+    componentDidUpdate() {
+        const { contacts } = this.state;
+        localStorage.setItem('contacts', JSON.stringify(contacts));
+    }
+
+    componentDidMount() {
+        const oldContacts = localStorage.getItem('contacts') ? JSON.parse(localStorage.getItem('contacts')) : [];
+        this.setState({ contacts: oldContacts });
     }
 
     removeContact = (e) => {
@@ -43,14 +48,14 @@ export class Contacts extends Component{
         const newContactList = contacts.filter(contact => contact.id !== deletedContact);
         this.setState({
             contacts: newContactList,
-        })
+        });
     }
 
     findContact = (e) => {
         const serchName = e.target.value;
         this.setState({
-        filter: serchName,           
-        })        
+            filter: serchName,
+        });
     }
 
     filtredList = () => {
@@ -103,3 +108,21 @@ export class Contacts extends Component{
 
 //         </Container>
         
+
+
+    // addContact = (e) => {
+    //     const { contacts } = this.state;
+    //     e.preventDefault();
+    //     const form = e.currentTarget;
+    //     const newContactName = form.elements.name.value;
+    //     const newContactNumber = form.elements.number.value;
+
+    //     if (contacts.find(item => item.name.toLowerCase() === newContactName.toLowerCase()))
+    //         {
+    //             return Notify.warning(`${newContactName} is alrady in contacts`,
+    //             { timeout: 4000, position: 'center-top', width: '400px', fontSize: '28px' })
+    //         };
+    //     const newContact = { id: nanoid(), name: newContactName, number: newContactNumber, };
+    //     this.setState(prew => ({ contacts: [...prew.contacts, newContact], }));
+    //     form.reset();
+    // }
