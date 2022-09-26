@@ -31,9 +31,11 @@ export class Contacts extends Component{
         form.reset();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(_, prew) {
         const { contacts } = this.state;
-        localStorage.setItem('contacts', JSON.stringify(contacts));
+        if(prew.contacts.length !== contacts.length){
+            localStorage.setItem('contacts', JSON.stringify(contacts));
+        }
     }
 
     componentDidMount() {
@@ -66,8 +68,6 @@ export class Contacts extends Component{
     
     render() {
         const { contacts, filter } = this.state;
-        console.log("this.filtredList()",  this.filtredList().length)
-        console.log(contacts.length);
 
         return <Container>
             <Section>

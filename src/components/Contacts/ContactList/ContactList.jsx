@@ -3,7 +3,6 @@ import { Item, Button, List} from './ContactList.styled';
 
 
 export function ContactList({ contacts, removeContact }) {
-console.log(contacts)
     return (<List>{contacts.map(contact => <Item key={contact.id}>{contact.name}: {contact.number}
         <Button id={contact.id} onClick={removeContact}>Delete</Button></Item>)}</List>)
     }
